@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ label.title }} Label - Grocery Product Labeling</title>
+    <title>Quiz Introduction - Grocery Product Labeling</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -90,42 +90,41 @@
             border-bottom: 15px solid #a5d6a7;
         }
         
-        .card {
-            border-radius: 0.5rem;
-            overflow: hidden;
-            margin-bottom: 2rem;
-            transition: transform 0.3s ease;
+        .quiz-intro {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 40px 20px;
         }
         
-        .card:hover {
-            transform: translateY(-5px);
+        .quiz-title {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            font-weight: normal;
         }
         
-        .card-img-top {
-            max-height: 400px;
-            object-fit: contain;
-            padding: 1rem;
-            background-color: #f8f9fa;
+        .quiz-description {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 60px;
         }
         
-        .btn-primary {
-            background-color: #28a745;
-            border-color: #28a745;
+        .start-button {
+            background-color: #a5d6a7;
+            color: #333;
+            border: 1px solid #888;
+            padding: 15px 80px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
         
-        .btn-primary:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
-        
-        .btn-outline-primary {
-            color: #28a745;
-            border-color: #28a745;
-        }
-        
-        .btn-outline-primary:hover {
-            background-color: #28a745;
-            border-color: #28a745;
+        .start-button:hover {
+            background-color: #8bc34a;
+            color: #333;
         }
     </style>
 </head>
@@ -145,54 +144,24 @@
                     <a href="{{ url_for('learn', label_id=5) }}">Nutrition</a>
                 </div>
             </div>
-            <a href="{{ url_for('quiz', question_id=0) }}">quiz</a>
+            <a href="{{ url_for('quiz_intro') }}">quiz</a>
         </div>
     </nav>
 
-    <div class="container">
-        <header class="text-center mb-5">
-            <h1 class="display-4">{{ label.title }}</h1>
-        </header>
-
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow mb-4">
-                    <img src="{{ url_for('static', filename=label.image_url[1:] if label.image_url.startswith('/') else label.image_url) }}" 
-                         class="card-img-top" alt="{{ label.title }} label example">
-                    <div class="card-body">
-                        <h3 class="card-title">About {{ label.title }} Labels</h3>
-                        <p class="card-text">{{ label.description }}</p>
-                        
-                        <h4>How to identify:</h4>
-                        <ul class="list-group list-group-flush mb-3">
-                            {% for identifier in label.identifiers %}
-                            <li class="list-group-item">{{ identifier }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-between">
-                    {% if prev_url %}
-                    <a href="{{ prev_url }}" class="btn btn-outline-primary" id="prev-button">Previous Label</a>
-                    {% else %}
-                    <a href="{{ url_for('home') }}" class="btn btn-outline-primary">Back to Home</a>
-                    {% endif %}
-
-                    {% if next_url %}
-                    <a href="{{ next_url }}" class="btn btn-primary" id="next-button">
-                        {% if 'quiz' in next_url %}
-                        Start Quiz
-                        {% else %}
-                        Next Label
-                        {% endif %}
-                    </a>
-                    {% else %}
-                    <button class="btn btn-primary" disabled>Next Label</button>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+    <div class="quiz-intro">
+        <h1 class="quiz-title">Quiz Time!</h1>
+        
+        <p class="quiz-description">
+            Are you ready to take an exam? This will be a shopping 
+            themed quiz where you get to go around shopping for 
+            specific grocery items with specific labels. Some are 
+            more tricky than others and may have multiple answers so 
+            keep an eye out for that
+        </p>
+        
+        <a href="{{ url_for('quiz', question_id=0) }}" class="start-button">
+            start
+        </a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -212,18 +181,8 @@
                 }
             });
             
-            // Record when user views this page
-            console.log('User viewed label: {{ label.name }}');
-            
-            // Track how long user spends on the page
-            const startTime = new Date();
-            
-            // Record when user navigates away
-            $(window).on('beforeunload', function() {
-                const endTime = new Date();
-                const timeSpent = Math.round((endTime - startTime) / 1000);
-                console.log(`User spent ${timeSpent} seconds on ${label.name} label`);
-            });
+            // Record when user visits quiz intro page
+            console.log('User visited quiz intro page at: ' + new Date());
         });
     </script>
 </body>

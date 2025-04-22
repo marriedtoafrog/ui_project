@@ -5,37 +5,194 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz - Grocery Product Labeling</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-bottom: 2rem;
+        }
+        
+        .top-nav {
+            background-color: #d8ecd8;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #aaa;
+            position: relative;
+        }
+        
+        .site-title {
+            font-weight: normal;
+            font-size: 1.5rem;
+            margin: 0;
+            text-align: left;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 1.2rem;
+            position: relative;
+        }
+        
+        /* Dropdown styles */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #a5d6a7;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            padding: 20px;
+            border: 1px solid #888;
+            text-align: left;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 10px 5px;
+            font-size: 1.1rem;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #8bc34a;
+        }
+        
+        .arrow-up {
+            position: absolute;
+            top: -10px;
+            right: 30px;
+            width: 0; 
+            height: 0; 
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 15px solid #a5d6a7;
+        }
+        
+        .card {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: #28a745;
+            color: white;
+            padding: 1rem;
+        }
+        
+        .card-img-top {
+            max-height: 400px;
+            object-fit: contain;
+            padding: 1rem;
+            background-color: #f8f9fa;
+        }
+        
+        .options-container {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-check {
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .form-check:hover {
+            background-color: #e9ecef;
+        }
+        
+        .form-check-input:checked {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .form-check-input:checked + .form-check-label {
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .btn-primary:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        
+        .progress {
+            height: 10px;
+            margin-top: 10px;
+        }
+        
+        .progress-bar {
+            background-color: #28a745;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ url_for('home') }}">Grocery Product Labeling</a>
-                <div class="d-flex">
-                    <div class="progress mx-2" style="width: 200px; height: 20px;">
-                        <div class="progress-bar" role="progressbar" 
-                             style="width: {{ (question_id / total_questions) * 100 }}%;" 
-                             aria-valuenow="{{ question_id + 1 }}" 
-                             aria-valuemin="0" 
-                             aria-valuemax="{{ total_questions }}">
-                            {{ question_id + 1 }}/{{ total_questions }}
-                        </div>
-                    </div>
+    <nav class="top-nav">
+        <h1 class="site-title" onclick="window.location.href='{{ url_for('home') }}'">Grocery Product Labeling</h1>
+        <div class="nav-links">
+            <div class="dropdown-container">
+                <a href="#" id="produceLabelsLink">produce labels</a>
+                <div id="produceLabelsDropdown" class="dropdown-menu">
+                    <div class="arrow-up"></div>
+                    <a href="{{ url_for('learn', label_id=1) }}">Bioengineered</a>
+                    <a href="{{ url_for('learn', label_id=0) }}">Organic</a>
+                    <a href="{{ url_for('learn', label_id=2) }}">Conventional</a>
+                    <a href="{{ url_for('learn', label_id=3) }}">Local</a>
+                    <a href="{{ url_for('learn', label_id=4) }}">non-GMO</a>
+                    <a href="{{ url_for('learn', label_id=5) }}">Nutrition</a>
                 </div>
             </div>
-        </nav>
+            <a href="{{ url_for('quiz_intro') }}">quiz</a>
+        </div>
+    </nav>
 
-        <header class="text-center mb-5">
-            <h1 class="display-4">Food Label Quiz</h1>
-            <p class="lead">Let's see what you've learned about food labels!</p>
-        </header>
-
+    <div class="container mt-4">
+        <div class="progress mb-4">
+            <div class="progress-bar" role="progressbar" 
+                 style="width: {{ (question_id / total_questions) * 100 }}%;" 
+                 aria-valuenow="{{ question_id + 1 }}" 
+                 aria-valuemin="0" 
+                 aria-valuemax="{{ total_questions }}">
+            </div>
+        </div>
+        
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card shadow mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0">Question {{ question_id + 1 }}</h3>
+                    <div class="card-header">
+                        <h3 class="mb-0">Question {{ question_id + 1 }} of {{ total_questions }}</h3>
                     </div>
                     
                     {% if question.image_url %}
@@ -44,7 +201,7 @@
                     {% endif %}
                     
                     <div class="card-body">
-                        <form method="POST" id="quiz-form">
+                        <form method="POST" id="quiz-form" data-question-id="{{ question_id }}">
                             <h4 class="card-title mb-4">{{ question.question }}</h4>
                             
                             <div class="alert alert-info">
@@ -74,21 +231,46 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
         $(document).ready(function() {
-            // Record when user submits an answer
+            // Toggle dropdown menu for produce labels
+            $('#produceLabelsLink').on('click', function(e) {
+                e.preventDefault();
+                $('#produceLabelsDropdown').toggleClass('show');
+            });
+            
+            // Close dropdown when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.dropdown-container').length) {
+                    $('#produceLabelsDropdown').removeClass('show');
+                }
+            });
+            
+            // Form validation
             $('#quiz-form').on('submit', function() {
                 const selectedOptions = [];
                 $('input[name="answers"]:checked').each(function() {
                     selectedOptions.push($(this).val());
                 });
-                console.log('User answered question ' + {{ question_id + 1 }} + ' with options: ' + selectedOptions.join(', '));
                 
-                // Form validation - require at least one selection
+                // Require at least one selection
                 if (selectedOptions.length === 0) {
                     alert('Please select at least one option before continuing.');
                     return false;
+                }
+                
+                // Visual feedback on submission
+                $('#submit-answer').text('Submitting...').prop('disabled', true);
+                
+                return true;
+            });
+            
+            // Add visual feedback when checkboxes are clicked
+            $('.form-check-input').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $(this).closest('.form-check').addClass('bg-light');
+                } else {
+                    $(this).closest('.form-check').removeClass('bg-light');
                 }
             });
         });

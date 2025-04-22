@@ -5,70 +5,218 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Results - Grocery Product Labeling</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-bottom: 2rem;
+        }
+        
+        .top-nav {
+            background-color: #d8ecd8;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #aaa;
+            position: relative;
+        }
+        
+        .site-title {
+            font-weight: normal;
+            font-size: 1.5rem;
+            margin: 0;
+            text-align: left;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 1.2rem;
+            position: relative;
+        }
+        
+        /* Dropdown styles */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #a5d6a7;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            padding: 20px;
+            border: 1px solid #888;
+            text-align: left;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 10px 5px;
+            font-size: 1.1rem;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #8bc34a;
+        }
+        
+        .arrow-up {
+            position: absolute;
+            top: -10px;
+            right: 30px;
+            width: 0; 
+            height: 0; 
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 15px solid #a5d6a7;
+        }
+        
+        .card {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: #28a745;
+            color: white;
+            padding: 1rem;
+        }
+        
+        .results-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #28a745;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .feedback-item {
+            background-color: #f1f8e9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .btn-outline-success {
+            color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .btn-outline-success:hover {
+            background-color: #28a745;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ url_for('home') }}">Grocery Product Labeling</a>
+    <nav class="top-nav">
+        <h1 class="site-title" onclick="window.location.href='{{ url_for('home') }}'">Grocery Product Labeling</h1>
+        <div class="nav-links">
+            <div class="dropdown-container">
+                <a href="#" id="produceLabelsLink">produce labels</a>
+                <div id="produceLabelsDropdown" class="dropdown-menu">
+                    <div class="arrow-up"></div>
+                    <a href="{{ url_for('learn', label_id=1) }}">Bioengineered</a>
+                    <a href="{{ url_for('learn', label_id=0) }}">Organic</a>
+                    <a href="{{ url_for('learn', label_id=2) }}">Conventional</a>
+                    <a href="{{ url_for('learn', label_id=3) }}">Local</a>
+                    <a href="{{ url_for('learn', label_id=4) }}">non-GMO</a>
+                    <a href="{{ url_for('learn', label_id=5) }}">Nutrition</a>
+                </div>
             </div>
-        </nav>
+            <a href="{{ url_for('quiz_intro') }}">quiz</a>
+        </div>
+    </nav>
 
-        <header class="text-center mb-5">
-            <h1 class="display-4">Your Quiz Results</h1>
-            <p class="lead">See how well you know your food labels!</p>
-        </header>
-
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0">Score: {{ score }}%</h3>
-                    </div>
-                    
-                    <div class="card-body">
-                        {% if score >= 80 %}
-                        <div class="alert alert-success">
-                            <h4>Great job!</h4>
-                            <p>You're a food label expert! You have a solid understanding of how to identify different types of food labels.</p>
-                        </div>
-                        {% elif score >= 60 %}
-                        <div class="alert alert-info">
-                            <h4>Good work!</h4>
-                            <p>You have a good grasp of food labels, but there's still a bit more to learn.</p>
-                        </div>
-                        {% else %}
-                        <div class="alert alert-warning">
-                            <h4>Keep learning!</h4>
-                            <p>You're on your way to understanding food labels, but we recommend reviewing the material again.</p>
-                        </div>
-                        {% endif %}
-                        
-                        {% if feedback %}
-                        <h4 class="mt-4">Review Points:</h4>
-                        <ul class="list-group">
-                            {% for item in feedback %}
-                            <li class="list-group-item">
-                                <h5>{{ item.question }}</h5>
-                                <p>Correct answers include:</p>
-                                <ul>
-                                    {% for option in item.correct_options %}
-                                    <li>{{ option }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="card-footer">
-                        <div class="d-grid gap-2">
-                            <a href="{{ url_for('learn', label_id=0) }}" class="btn btn-outline-primary">Restart Learning</a>
-                            <a href="{{ url_for('quiz', question_id=0) }}" class="btn btn-primary">Retry Quiz</a>
-                        </div>
-                    </div>
+    <div class="results-container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center mb-0">Quiz Results</h2>
+            </div>
+            <div class="card-body">
+                <div class="score-display">{{ score }}%</div>
+                
+                {% if score >= 80 %}
+                <div class="alert alert-success">
+                    <h4 class="alert-heading">Great job!</h4>
+                    <p>You're a food label expert! You have a solid understanding of how to identify different types of food labels.</p>
+                </div>
+                {% elif score >= 60 %}
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">Good work!</h4>
+                    <p>You have a good grasp of food labels, but there's still a bit more to learn.</p>
+                </div>
+                {% else %}
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">Keep learning!</h4>
+                    <p>You're on your way to understanding food labels, but we recommend reviewing the material again.</p>
+                </div>
+                {% endif %}
+                
+                {% if feedback %}
+                <h4 class="mt-4">Review Points:</h4>
+                {% for item in feedback %}
+                <div class="feedback-item">
+                    <h5>{{ item.question }}</h5>
+                    <p>Correct answers include:</p>
+                    <ul>
+                        {% for option in item.correct_options %}
+                        <li>{{ option }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+                {% endif %}
+                
+                <div class="action-buttons">
+                    <a href="{{ url_for('home') }}" class="btn btn-outline-success">Back to Home</a>
+                    <a href="{{ url_for('learn', label_id=0) }}" class="btn btn-outline-success">Review Labels</a>
+                    <a href="{{ url_for('quiz_intro') }}" class="btn btn-success">Try Again</a>
                 </div>
             </div>
         </div>
@@ -76,11 +224,23 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
         $(document).ready(function() {
-            // Record quiz completion
-            console.log('User completed quiz with score: {{ score }}%');
+            // Toggle dropdown menu for produce labels
+            $('#produceLabelsLink').on('click', function(e) {
+                e.preventDefault();
+                $('#produceLabelsDropdown').toggleClass('show');
+            });
+            
+            // Close dropdown when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.dropdown-container').length) {
+                    $('#produceLabelsDropdown').removeClass('show');
+                }
+            });
+            
+            // Record when user views results
+            console.log('User viewed quiz results with score: {{ score }}%');
         });
     </script>
 </body>

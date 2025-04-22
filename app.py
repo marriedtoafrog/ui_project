@@ -61,7 +61,7 @@ def learn(label_id):
     
     # If this is the last label, next goes to quiz
     if next_id is None and label_id == len(label_data) - 1:
-        next_url = url_for('quiz', question_id=0)
+        next_url = url_for('quiz_intro')
     else:
         next_url = url_for('learn', label_id=next_id) if next_id is not None else None
     
@@ -75,6 +75,15 @@ def learn(label_id):
         prev_url=prev_url,
         total_labels=len(label_data)
     )
+
+@app.route('/quiz_intro')
+def quiz_intro():
+    # Get current session
+    session_id = session.get('user_session')
+    if not session_id or session_id not in user_data['sessions']:
+        return redirect(url_for('home'))
+    
+    return render_template('quiz_intro.html')
 
 @app.route('/quiz/<int:question_id>', methods=['GET', 'POST'])
 def quiz(question_id):
