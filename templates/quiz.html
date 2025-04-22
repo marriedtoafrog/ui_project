@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="post">
+  <h3 class="quiz-question"></h3>
+  <div class="form-group">
+    <label>Your Answer:</label>
+    <input name="answer" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <p class="mt-2">Question {{ quiz_id }} of {{ total_quiz }}</p>
+</form>
+{% endblock %}

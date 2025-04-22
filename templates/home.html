@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center">
+  <h1>Welcome to Grocery Product Labeling Guide</h1>
+  <button id="start-btn" class="btn btn-primary btn-lg mt-3">
+    Start
+  </button>
+</div>
+
+<script>
+  // Use double‑quotes for the JS string so that your Jinja 'url_for' can keep its single‑quotes
+  $('#start-btn').click(function(){
+    window.location = "{{ url_for('learn', lesson_id=1) }}";
+  });
+</script>
+{% endblock %}

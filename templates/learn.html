@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="lesson-title"></h2>
+<ul class="lesson-details list-group"></ul>
+<div class="mt-3">
+  {% if lesson_id>1 %}<button id="prev-btn" class="btn btn-secondary">Previous Label</button>{% endif %}
+  {% if lesson_id<total_lessons %}
+    <button id="next-btn" class="btn btn-primary">Next Label</button>
+  {% else %}
+    <button id="to-quiz-btn" class="btn btn-success">Take Quiz</button>
+  {% endif %}
+</div>
+{% endblock %}
