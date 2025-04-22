@@ -1,0 +1,57 @@
+[
+    {
+        "question": "Which of these items are organic?",
+        "options": [
+            "Bananas with a sticker that has a 5-digit code starting with 9",
+            "Apples with a sticker that has a 4-digit code starting with 4",
+            "Vegetables with the USDA Organic seal",
+            "Products with the Non-GMO Project seal"
+        ],
+        "correct_answers": [true, false, true, false],
+        "image_url": "/static/images/quiz_organic.jpg"
+    },
+    {
+        "question": "Which of these items are conventionally grown?",
+        "options": [
+            "Produce with a 4-digit PLU code starting with 3 or 4",
+            "Products with no special labels",
+            "Products with the Non-GMO Project seal",
+            "Produce with a 5-digit PLU code starting with 9"
+        ],
+        "correct_answers": [true, true, false, false],
+        "image_url": "/static/images/quiz_conventional.jpg"
+    },
+    {
+        "question": "Which of these options correctly describes bioengineered/GMO products?",
+        "options": [
+            "They have a 5-digit PLU code starting with 8",
+            "They display the Bioengineered disclosure symbol",
+            "They always carry the Non-GMO Project seal",
+            "They are grown without synthetic pesticides"
+        ],
+        "correct_answers": [true, true, false, false],
+        "image_url": "/static/images/quiz_bioengineered.jpg"
+    },
+    {
+        "question": "Which nutritional claims are correct?",
+        "options": [
+            "'Good source' means the product contains 10-19% of the Daily Value",
+            "'High in' means the product contains 20% or more of the Daily Value",
+            "'Light in' means the product contains 20% or less of the Daily Value",
+            "'Organic' is a nutrition claim"
+        ],
+        "correct_answers": [true, true, true, false],
+        "image_url": "/static/images/quiz_nutrition.jpg"
+    },
+    {
+        "question": "Which statements about local produce are true?",
+        "options": [
+            "Local produce is typically grown within 100-400 miles of where it's sold",
+            "Local produce always has a specific PLU code",
+            "Local produce can be identified by locally grown stickers",
+            "Local produce is always organic"
+        ],
+        "correct_answers": [true, false, true, false],
+        "image_url": "/static/images/quiz_local.jpg"
+    }
+]

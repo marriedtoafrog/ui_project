@@ -1,0 +1,61 @@
+[
+    {
+        "name": "organic",
+        "title": "Organic",
+        "description": "Grown without synthetic pesticides or fertilizers, no GMOs, and meets USDA standards",
+        "image_url": "/static/images/organic.jpg",
+        "identifiers": [
+            "USDA Organic seal",
+            "5-digit PLU code starting with 9"
+        ]
+    },
+    {
+        "name": "bioengineered",
+        "title": "Bioengineered/GMO",
+        "description": "Contains ingredients that have been genetically modified",
+        "image_url": "/static/images/bioengineered.jpg",
+        "identifiers": [
+            "5-digit PLU code starting with 8",
+            "Bioengineered disclosure symbol"
+        ]
+    },
+    {
+        "name": "conventional",
+        "title": "Conventional",
+        "description": "Standard commercially grown produce that may use pesticides and fertilizers",
+        "image_url": "/static/images/conventional.jpg",
+        "identifiers": [
+            "4-digit PLU code starting with 3 or 4",
+            "No special labels"
+        ]
+    },
+    {
+        "name": "local",
+        "title": "Local",
+        "description": "Grown within a defined local region (usually 100-400 miles)",
+        "image_url": "/static/images/local.jpg",
+        "identifiers": [
+            "Locally grown stickers"
+        ]
+    },
+    {
+        "name": "non-gmo",
+        "title": "Non-GMO",
+        "description": "Made without genetically modified ingredients but may still use conventional farming methods",
+        "image_url": "/static/images/non-gmo.jpg",
+        "identifiers": [
+            "Non-GMO Project - Verified seal"
+        ]
+    },
+    {
+        "name": "nutrition",
+        "title": "Nutrition Claims",
+        "description": "Labels that provide information about nutritional content",
+        "image_url": "/static/images/nutrition.jpg",
+        "identifiers": [
+            "Good source (10-19% of Daily Value)",
+            "High in (20% or more of Daily Value)",
+            "Light in (20% or less of Daily Value)"
+        ]
+    }
+]

@@ -1,13 +1,94 @@
-{% extends "base.html" %}
-{% block content %}
-<h2 class="lesson-title"></h2>
-<ul class="lesson-details list-group"></ul>
-<div class="mt-3">
-  {% if lesson_id>1 %}<button id="prev-btn" class="btn btn-secondary">Previous Label</button>{% endif %}
-  {% if lesson_id<total_lessons %}
-    <button id="next-btn" class="btn btn-primary">Next Label</button>
-  {% else %}
-    <button id="to-quiz-btn" class="btn btn-success">Take Quiz</button>
-  {% endif %}
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ label.title }} Label - Grocery Product Labeling</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('home') }}">Grocery Product Labeling</a>
+                <div class="d-flex">
+                    <div class="progress mx-2" style="width: 200px; height: 20px;">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ (label_id / total_labels) * 100 }}%;" 
+                             aria-valuenow="{{ label_id + 1 }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="{{ total_labels }}">
+                            {{ label_id + 1 }}/{{ total_labels }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="text-center mb-5">
+            <h1 class="display-4">{{ label.title }}</h1>
+        </header>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow mb-4">
+                    <img src="{{ url_for('static', filename=label.image_url[1:] if label.image_url.startswith('/') else label.image_url) }}" 
+                         class="card-img-top" alt="{{ label.title }} label example">
+                    <div class="card-body">
+                        <h3 class="card-title">About {{ label.title }} Labels</h3>
+                        <p class="card-text">{{ label.description }}</p>
+                        
+                        <h4>How to identify:</h4>
+                        <ul class="list-group list-group-flush mb-3">
+                            {% for identifier in label.identifiers %}
+                            <li class="list-group-item">{{ identifier }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    {% if prev_url %}
+                    <a href="{{ prev_url }}" class="btn btn-outline-primary">Previous Label</a>
+                    {% else %}
+                    <button class="btn btn-outline-primary" disabled>Previous Label</button>
+                    {% endif %}
+
+                    {% if next_url %}
+                    <a href="{{ next_url }}" class="btn btn-primary" id="next-button">
+                        {% if 'quiz' in next_url %}
+                        Start Quiz
+                        {% else %}
+                        Next Label
+                        {% endif %}
+                    </a>
+                    {% else %}
+                    <button class="btn btn-primary" disabled>Next Label</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Record when user views this page
+            console.log('User viewed label: {{ label.name }}');
+            
+            // Track how long user spends on the page
+            const startTime = new Date();
+            
+            // Record when user navigates away
+            $(window).on('beforeunload', function() {
+                const endTime = new Date();
+                const timeSpent = Math.round((endTime - startTime) / 1000);
+                console.log(`User spent ${timeSpent} seconds on ${label.name} label`);
+            });
+        });
+    </script>
+</body>
+</html>

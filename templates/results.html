@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results - Grocery Product Labeling</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('home') }}">Grocery Product Labeling</a>
+            </div>
+        </nav>
+
+        <header class="text-center mb-5">
+            <h1 class="display-4">Your Quiz Results</h1>
+            <p class="lead">See how well you know your food labels!</p>
+        </header>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Score: {{ score }}%</h3>
+                    </div>
+                    
+                    <div class="card-body">
+                        {% if score >= 80 %}
+                        <div class="alert alert-success">
+                            <h4>Great job!</h4>
+                            <p>You're a food label expert! You have a solid understanding of how to identify different types of food labels.</p>
+                        </div>
+                        {% elif score >= 60 %}
+                        <div class="alert alert-info">
+                            <h4>Good work!</h4>
+                            <p>You have a good grasp of food labels, but there's still a bit more to learn.</p>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-warning">
+                            <h4>Keep learning!</h4>
+                            <p>You're on your way to understanding food labels, but we recommend reviewing the material again.</p>
+                        </div>
+                        {% endif %}
+                        
+                        {% if feedback %}
+                        <h4 class="mt-4">Review Points:</h4>
+                        <ul class="list-group">
+                            {% for item in feedback %}
+                            <li class="list-group-item">
+                                <h5>{{ item.question }}</h5>
+                                <p>Correct answers include:</p>
+                                <ul>
+                                    {% for option in item.correct_options %}
+                                    <li>{{ option }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-footer">
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('learn', label_id=0) }}" class="btn btn-outline-primary">Restart Learning</a>
+                            <a href="{{ url_for('quiz', question_id=0) }}" class="btn btn-primary">Retry Quiz</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Record quiz completion
+            console.log('User completed quiz with score: {{ score }}%');
+        });
+    </script>
+</body>
+</html>
