@@ -39,6 +39,15 @@ def home():
     
     return render_template('index.html')
 
+@app.route('/learn_overview')
+def learn_overview():
+    # Get current session
+    session_id = session.get('user_session')
+    if not session_id or session_id not in user_data['sessions']:
+        return redirect(url_for('home'))
+    
+    return render_template('learn_overview.html')
+
 @app.route('/learn/<int:label_id>')
 def learn(label_id):
     # Get current session
@@ -183,21 +192,12 @@ def get_user_data():
 if __name__ == '__main__':
     # Create necessary directories if they don't exist
     os.makedirs('static/data', exist_ok=True)
+    os.makedirs('static/images', exist_ok=True)
     
     # Check if label data file exists, if not create it
     if not os.path.exists('static/data/labels.json'):
         with open('static/data/labels.json', 'w') as f:
             json.dump([
-                {
-                    "name": "organic",
-                    "title": "Organic",
-                    "description": "Grown without synthetic pesticides or fertilizers, no GMOs, and meets USDA standards",
-                    "image_url": "/static/images/organic.jpg",
-                    "identifiers": [
-                        "USDA Organic seal",
-                        "5-digit PLU code starting with 9"
-                    ]
-                },
                 {
                     "name": "bioengineered",
                     "title": "Bioengineered/GMO",
@@ -246,6 +246,16 @@ if __name__ == '__main__':
                         "High in (20% or more of Daily Value)",
                         "Light in (20% or less of Daily Value)"
                     ]
+                },
+                {
+                    "name": "organic",
+                    "title": "Organic",
+                    "description": "Grown without synthetic pesticides or fertilizers, no GMOs, and meets USDA standards",
+                    "image_url": "/static/images/organic.jpg",
+                    "identifiers": [
+                        "USDA Organic seal",
+                        "5-digit PLU code starting with 9"
+                    ]
                 }
             ], f)
     
@@ -261,7 +271,7 @@ if __name__ == '__main__':
                         "Vegetables with the USDA Organic seal",
                         "Products with the Non-GMO Project seal"
                     ],
-                    "correct_answers": [True, False, True, False],
+                    "correct_answers": [true, false, true, false],
                     "image_url": "/static/images/quiz_organic.jpg"
                 },
                 {
@@ -272,7 +282,7 @@ if __name__ == '__main__':
                         "Products with the Non-GMO Project seal",
                         "Produce with a 5-digit PLU code starting with 9"
                     ],
-                    "correct_answers": [True, True, False, False],
+                    "correct_answers": [true, true, false, false],
                     "image_url": "/static/images/quiz_conventional.jpg"
                 }
             ], f)

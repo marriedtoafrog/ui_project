@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz - Grocery Product Labeling</title>
+    <title>Shopping Quiz - Grocery Product Labeling</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #f0f0f0;
             color: #212529;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding-bottom: 2rem;
@@ -43,235 +43,383 @@
             position: relative;
         }
         
-        /* Dropdown styles */
-        .dropdown-container {
+        .section-title {
+            background-color: #e8f5e9;
+            padding: 8px 15px;
+            margin: 30px 0 15px 0;
+            border-radius: 4px;
+            font-size: 1.5rem;
+            color: #2e7d32;
+            text-transform: capitalize;
+        }
+        
+        .product-item {
+            cursor: pointer;
             position: relative;
-            display: inline-block;
-        }
-        
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: #a5d6a7;
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            padding: 20px;
-            border: 1px solid #888;
-            text-align: left;
-        }
-        
-        .dropdown-menu.show {
-            display: block;
-        }
-        
-        .dropdown-menu a {
-            color: #333;
-            text-decoration: none;
-            display: block;
-            padding: 10px 5px;
-            font-size: 1.1rem;
-        }
-        
-        .dropdown-menu a:hover {
-            background-color: #8bc34a;
-        }
-        
-        .arrow-up {
-            position: absolute;
-            top: -10px;
-            right: 30px;
-            width: 0; 
-            height: 0; 
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 15px solid #a5d6a7;
-        }
-        
-        .card {
-            border-radius: 0.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s;
             overflow: hidden;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
         }
         
-        .card-header {
-            background-color: #28a745;
+        .product-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .product-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-item.correct {
+            border: 2px solid green;
+        }
+        
+        .product-item.incorrect {
+            border: 2px solid red;
+        }
+        
+        /* Feedback overlay */
+        .feedback-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 1rem;
-        }
-        
-        .card-img-top {
-            max-height: 400px;
-            object-fit: contain;
-            padding: 1rem;
-            background-color: #f8f9fa;
-        }
-        
-        .options-container {
-            background-color: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .form-check {
-            padding: 0.75rem;
-            border: 1px solid #dee2e6;
-            border-radius: 0.25rem;
-            margin-bottom: 0.5rem;
-            transition: all 0.2s ease;
-        }
-        
-        .form-check:hover {
-            background-color: #e9ecef;
-        }
-        
-        .form-check-input:checked {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
-        
-        .form-check-input:checked + .form-check-label {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
             font-weight: bold;
+            z-index: 10;
         }
         
-        .btn-primary {
-            background-color: #28a745;
-            border-color: #28a745;
+        .feedback-overlay.show-correct {
+            display: flex;
+            background-color: rgba(76, 175, 80, 0.8);
         }
         
-        .btn-primary:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
+        .feedback-overlay.show-incorrect {
+            display: flex;
+            background-color: rgba(220, 53, 69, 0.8);
         }
         
-        .progress {
-            height: 10px;
-            margin-top: 10px;
+        .shopping-list {
+            padding: 10px 20px;
+            background-color: #f9f9f9;
+            border-left: 1px solid #ddd;
         }
         
-        .progress-bar {
-            background-color: #28a745;
+        .shopping-item {
+            margin-bottom: 10px;
+            padding: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .shopping-item.completed {
+            background-color: #a5d6a7;
+        }
+        
+        /* Completion overlay */
+        .completion-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(165, 214, 167, 0.9); /* Light green with opacity */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000;
+            text-align: center;
+        }
+        
+        .completion-message {
+            color: #333;
+            font-size: 2rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+        
+        .completion-buttons {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .completion-btn {
+            padding: 15px 60px;
+            background-color: white;
+            border: 1px solid #333;
+            color: #333;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .completion-btn:hover {
+            background-color: #f0f0f0;
         }
     </style>
 </head>
 <body>
     <nav class="top-nav">
-        <h1 class="site-title" onclick="window.location.href='{{ url_for('home') }}'">Grocery Product Labeling</h1>
+        <h1 class="site-title" onclick="window.location.href='index.html'">Grocery Product Labeling</h1>
         <div class="nav-links">
-            <div class="dropdown-container">
-                <a href="#" id="produceLabelsLink">produce labels</a>
-                <div id="produceLabelsDropdown" class="dropdown-menu">
-                    <div class="arrow-up"></div>
-                    <a href="{{ url_for('learn', label_id=1) }}">Bioengineered</a>
-                    <a href="{{ url_for('learn', label_id=0) }}">Organic</a>
-                    <a href="{{ url_for('learn', label_id=2) }}">Conventional</a>
-                    <a href="{{ url_for('learn', label_id=3) }}">Local</a>
-                    <a href="{{ url_for('learn', label_id=4) }}">non-GMO</a>
-                    <a href="{{ url_for('learn', label_id=5) }}">Nutrition</a>
-                </div>
-            </div>
-            <a href="{{ url_for('quiz_intro') }}">quiz</a>
+            <a href="produce-labels.html">produce labels</a>
+            <a href="quiz-intro.html">quiz</a>
         </div>
     </nav>
 
-    <div class="container mt-4">
-        <div class="progress mb-4">
-            <div class="progress-bar" role="progressbar" 
-                 style="width: {{ (question_id / total_questions) * 100 }}%;" 
-                 aria-valuenow="{{ question_id + 1 }}" 
-                 aria-valuemin="0" 
-                 aria-valuemax="{{ total_questions }}">
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col-md-9">
+                <h1 class="text-center">quiz</h1>
+                
+                <!-- Apple Section -->
+                <div class="section-title">Apples</div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="apple" data-correct="true">
+                            <img src="https://assets.newatlas.com/dims4/default/c318834/2147483647/strip/true/crop/548x365+51+0/resize/1200x800!/format/webp/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2Farchive%2Ffruitwash-1.jpg" alt="Apple with PLU code">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="apple" data-correct="true">
+                            <img src="https://d2j6dbq0eux0bg.cloudfront.net/images/1213111/520418208.jpg" alt="Apple with code">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="apple" data-correct="false">
+                            <img src="https://1.bp.blogspot.com/-sOvIhVuaBUw/WWOAtbzDW5I/AAAAAAAAFRk/Dr7mz8o-8N0oagwzT94FK_Pgs-tEUTQBQCLcBGAs/s1600/IMG_6321.jpg" alt="Apple with organic sticker">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="apple" data-correct="false">
+                            <img src="https://consolidatedlabel.com/wp-content/uploads/2021/05/fruit-produce-labels-banner-OG.jpg" alt="Apple with special label">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Banana Section -->
+                <div class="section-title">Bananas</div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="banana" data-correct="false">
+                            <img src="https://s3.amazonaws.com/img.kh-labs.com/WKVcXx63ffa3fd9e70b5.79380926" alt="Regular banana bunch">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="banana" data-correct="true">
+                            <img src="https://i.dailymail.co.uk/i/pix/2016/10/31/09/39E6EA9400000578-0-image-a-19_1477905229278.jpg" alt="Banana with organic label">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="banana" data-correct="false">
+                            <img src="https://assets.farmjournal.com/dims4/default/9f87757/2147483647/strip/false/crop/840x472+0+79/resize/1200x675!/quality/90/?url=https%3A%2F%2Ffj-corp-pub.s3.us-east-2.amazonaws.com%2Fs3fs-public%2F2023-09%2FEquifruit%20conventional%20bananas.png" alt="Conventional bananas">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Corn Section -->
+                <div class="section-title">Corn</div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="corn" data-correct="true">
+                            <img src="https://i5.walmartimages.com/seo/Pack-of-2-Del-Monte-Canned-Fresh-Cut-Golden-Kernel-Corn-15-25-Ounce-Less-Sodium_5ad32dcb-3b70-497a-8bf1-ffd74ddd0bdf.9e9fffb93bd4f883a9f15a5c0f568817.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF" alt="Low sodium corn">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="corn" data-correct="false">
+                            <img src="https://i5.walmartimages.com/seo/Great-Value-Golden-Sweet-Whole-Kernel-Corn-15-Oz_edbab888-dded-4641-abab-29c87eb28c44.e1a86f4acffc6e0591a4f4a38fcb7a30.png?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF" alt="Regular corn">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Strawberry Section -->
+                <div class="section-title">Strawberries</div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="strawberry" data-correct="true">
+                            <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSsSrY2vLmdHL4iQP4YESNSo3KXn68aEyAguBY4xL_9BreecFOgNCOBhHWTj_aoYfzlDHMzQjSUGXjeoADulaLOYHvmrSq9cr4m429ltqJuh0ulVAB6eCKBFA" alt="Non-GMO strawberries">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="strawberry" data-correct="false">
+                            <img src="https://i5.walmartimages.com/seo/Fresh-Mighty-Red-Strawberries-20-oz-Container_8fdba577-a091-4d41-afad-9ed9628023ce.caeb8b4457242a6f0927aa459595512b.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF" alt="Regular strawberries">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pineapple Section -->
+                <div class="section-title">Pineapples</div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="pineapple" data-correct="false">
+                            <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTOefDMIifwZVsBChHfwg_EsEP0-LxhpFojlOnwppH0M98aaqQ2nkSAMwwa7oKfeC0ANpP4QI-v4AILBaGw72NygIlMnH7M4RupZ7X0uETPfD-zos6I5XZwQg" alt="Regular pineapple">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product-item" data-type="pineapple" data-correct="true">
+                            <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/photosV2/6a713625-ef56-404b-95ea-9e28de8f84c7-retina-large.png" alt="Bioengineered pineapple">
+                            <div class="feedback-overlay"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow mb-4">
-                    <div class="card-header">
-                        <h3 class="mb-0">Question {{ question_id + 1 }} of {{ total_questions }}</h3>
-                    </div>
-                    
-                    {% if question.image_url %}
-                    <img src="{{ url_for('static', filename=question.image_url[1:] if question.image_url.startswith('/') else question.image_url) }}" 
-                         class="card-img-top" alt="Quiz question image">
-                    {% endif %}
-                    
-                    <div class="card-body">
-                        <form method="POST" id="quiz-form" data-question-id="{{ question_id }}">
-                            <h4 class="card-title mb-4">{{ question.question }}</h4>
-                            
-                            <div class="alert alert-info">
-                                <strong>Note:</strong> This question may have multiple correct answers. Select all that apply.
-                            </div>
-                            
-                            <div class="options-container">
-                                {% for option in question.options %}
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" name="answers" value="{{ loop.index0 }}" id="option{{ loop.index }}">
-                                    <label class="form-check-label" for="option{{ loop.index }}">
-                                        {{ option }}
-                                    </label>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            
-                            <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-primary btn-lg" id="submit-answer">Submit Answer</button>
-                            </div>
-                        </form>
-                    </div>
+            
+            <div class="col-md-3">
+                <div class="shopping-list">
+                    <h5>Shopping Lists (0/6):</h5>
+                    <div class="shopping-item" id="organic-bananas">Organic Bananas (0/1)</div>
+                    <div class="shopping-item" id="conventional-apples">Conventionally Grown Apples (0/2)</div>
+                    <div class="shopping-item" id="less-sodium-corn">"Less Sodium" Corn (0/1)</div>
+                    <div class="shopping-item" id="non-gmo-strawberries">Non-GMO Strawberries (0/1)</div>
+                    <div class="shopping-item" id="bioengineered-pineapple">Bioengineered Pineapple (0/1)</div>
                 </div>
             </div>
         </div>
     </div>
-
+    
+    <!-- Completion overlay -->
+    <div class="completion-overlay" id="completionOverlay">
+        <div class="completion-message">
+            Congrats on completing the exam! You've successfully filled your grocery cart and learned about produce labeling.
+        </div>
+        <div class="completion-buttons">
+            <a href="{{ url_for('home') }}" class="completion-btn">home</a>
+            <a href="{{ url_for('quiz_intro') }}" class="completion-btn">take quiz again</a>
+        </div>
+    </div>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Toggle dropdown menu for produce labels
-            $('#produceLabelsLink').on('click', function(e) {
-                e.preventDefault();
-                $('#produceLabelsDropdown').toggleClass('show');
-            });
+            // Track progress for each shopping list item
+            const progress = {
+                'banana': { current: 0, target: 1, id: 'organic-bananas', correctItems: [] },
+                'apple': { current: 0, target: 2, id: 'conventional-apples', correctItems: [] },
+                'corn': { current: 0, target: 1, id: 'less-sodium-corn', correctItems: [] },
+                'strawberry': { current: 0, target: 1, id: 'non-gmo-strawberries', correctItems: [] },
+                'pineapple': { current: 0, target: 1, id: 'bioengineered-pineapple', correctItems: [] }
+            };
             
-            // Close dropdown when clicking outside
-            $(document).on('click', function(e) {
-                if (!$(e.target).closest('.dropdown-container').length) {
-                    $('#produceLabelsDropdown').removeClass('show');
-                }
-            });
+            // Track total progress
+            let totalFound = 0;
+            const totalRequired = 6;
             
-            // Form validation
-            $('#quiz-form').on('submit', function() {
-                const selectedOptions = [];
-                $('input[name="answers"]:checked').each(function() {
-                    selectedOptions.push($(this).val());
-                });
-                
-                // Require at least one selection
-                if (selectedOptions.length === 0) {
-                    alert('Please select at least one option before continuing.');
-                    return false;
+            // Update shopping list display
+            function updateShoppingList() {
+                for (const type in progress) {
+                    const item = progress[type];
+                    $(`#${item.id}`).text(`${item.id.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} (${item.current}/${item.target})`);
+                    
+                    if (item.current === item.target) {
+                        $(`#${item.id}`).addClass('completed');
+                    }
                 }
                 
-                // Visual feedback on submission
-                $('#submit-answer').text('Submitting...').prop('disabled', true);
+                // Update total progress
+                $('h5').text(`Shopping Lists (${totalFound}/${totalRequired}):`);
                 
-                return true;
-            });
+                // If all items found, show completion message
+                if (totalFound === totalRequired) {
+                    setTimeout(function() {
+                        $('#completionOverlay').css('display', 'flex');
+                    }, 1500);
+                }
+            }
             
-            // Add visual feedback when checkboxes are clicked
-            $('.form-check-input').on('change', function() {
-                if ($(this).is(':checked')) {
-                    $(this).closest('.form-check').addClass('bg-light');
+            // Handle click on product items
+            $('.product-item').on('click', function() {
+                console.log("Clicked product item");
+                const $this = $(this);
+                const productType = $this.data('type');
+                const isCorrect = $this.data('correct');
+                const $overlay = $this.find('.feedback-overlay');
+                
+                // If this item was already clicked, do nothing
+                if ($this.hasClass('correct') || $this.hasClass('incorrect')) {
+                    return;
+                }
+                
+                if (isCorrect) {
+                    // Handle correct selection
+                    $this.addClass('correct');
+                    
+                    // Add item to found list if not already at target
+                    if (progress[productType].current < progress[productType].target) {
+                        progress[productType].current++;
+                        totalFound++;
+                        
+                        // Show correct feedback
+                        let feedbackMessage = '';
+                        
+                        if (productType === 'banana') {
+                            feedbackMessage = "Correct! It has a code that starts with #9";
+                        } else if (productType === 'apple') {
+                            feedbackMessage = "Correct! It has a conventional 4-digit PLU code that starts with #4";
+                        } else if (productType === 'corn') {
+                            feedbackMessage = "Correct! The label says \"less sodium\" which means it matches FDA approval of having less than the normal amount of sodium in corn";
+                        } else if (productType === 'strawberry') {
+                            feedbackMessage = "Correct! It has a Non-GMO Project seal meaning it wasn't bioengineered";
+                        } else if (productType === 'pineapple') {
+                            feedbackMessage = "Correct! It has a bioengineered disclosure";
+                        }
+                        
+                        $overlay.text(feedbackMessage).addClass('show-correct');
+                    }
                 } else {
-                    $(this).closest('.form-check').removeClass('bg-light');
+                    // Handle incorrect selection
+                    $this.addClass('incorrect');
+                    
+                    // Show incorrect feedback
+                    let feedbackMessage = '';
+                    
+                    if (productType === 'banana') {
+                        feedbackMessage = "Wrong! This is a conventional banana as it starts with the code #4";
+                    } else if (productType === 'apple') {
+                        feedbackMessage = "Wrong! That's an organic apple as it starts with code #9";
+                    } else if (productType === 'corn') {
+                        feedbackMessage = "Wrong! This doesn't indicate less sodium meaning it contains the normal amount";
+                    } else if (productType === 'strawberry') {
+                        feedbackMessage = "Wrong! These aren't labeled as Non-GMO meaning they are probably modified";
+                    } else if (productType === 'pineapple') {
+                        feedbackMessage = "Wrong! This isn't labeled as bioengineered";
+                    }
+                    
+                    $overlay.text(feedbackMessage).addClass('show-incorrect');
                 }
+                
+                // Update the shopping list
+                updateShoppingList();
+                
+                // Hide feedback after 2 seconds
+                setTimeout(function() {
+                    $overlay.removeClass('show-correct show-incorrect');
+                }, 2000);
             });
         });
     </script>

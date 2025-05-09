@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #f0f0f0;
             color: #212529;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding-bottom: 2rem;
@@ -43,89 +43,258 @@
             position: relative;
         }
         
-        /* Dropdown styles */
-        .dropdown-container {
+        .label-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .label-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+        
+        .image-container {
             position: relative;
-            display: inline-block;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
-        .dropdown-menu {
-            display: none;
+        .product-image {
+            display: block;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .info-point {
             position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: #a5d6a7;
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            padding: 20px;
-            border: 1px solid #888;
-            text-align: left;
+            z-index: 10;
         }
         
-        .dropdown-menu.show {
+        .plus-button {
+            width: 40px;
+            height: 40px;
+            background-color: #d669a7;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .info-text {
+            position: absolute;
+            max-width: 300px;
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 20;
+        }
+        
+        .info-text.visible {
             display: block;
         }
         
-        .dropdown-menu a {
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #e8e8e8;
+            border: 1px solid #333;
             color: #333;
             text-decoration: none;
-            display: block;
-            padding: 10px 5px;
-            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.2s;
         }
         
-        .dropdown-menu a:hover {
-            background-color: #8bc34a;
+        .nav-button:hover {
+            background-color: #d0d0d0;
+            color: #333;
         }
         
-        .arrow-up {
-            position: absolute;
-            top: -10px;
-            right: 30px;
-            width: 0; 
-            height: 0; 
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 15px solid #a5d6a7;
+        .disabled-button {
+            border-color: #aaa;
+            color: #aaa;
+            background-color: #f0f0f0;
+            cursor: not-allowed;
         }
         
-        .card {
-            border-radius: 0.5rem;
-            overflow: hidden;
-            margin-bottom: 2rem;
-            transition: transform 0.3s ease;
+        /* Bioengineered specific styles */
+        .bioengineered-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto 20px auto;
         }
         
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card-img-top {
-            max-height: 400px;
+        .bioengineered-image {
+            width: 100%;
+            height: auto;
             object-fit: contain;
-            padding: 1rem;
-            background-color: #f8f9fa;
         }
         
-        .btn-primary {
-            background-color: #28a745;
-            border-color: #28a745;
+        .bio-left-column, .bio-right-column {
+            display: flex;
+            flex-direction: column;
         }
         
-        .btn-primary:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
+        .identification-section {
+            text-align: center;
+            padding: 20px;
         }
         
-        .btn-outline-primary {
-            color: #28a745;
-            border-color: #28a745;
+        .identification-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: normal;
+            text-align: center;
         }
         
-        .btn-outline-primary:hover {
-            background-color: #28a745;
-            border-color: #28a745;
+        .identification-list {
+            display: inline-block;
+            text-align: left;
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 0 auto;
+        }
+        
+        .identification-list li {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .highlight-box {
+            position: relative;
+        }
+        
+        .highlight {
+            position: absolute;
+            border: 3px solid rgb(95, 130, 20);
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 5px;
+            pointer-events: none;
+        }
+        
+        /* Conventional specific styles */
+        .conventional-container {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            text-align: center;
+        }
+        
+        .conventional-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 30px auto;
+        }
+        
+        .conventional-description {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        /* Local specific styles */
+        .local-container {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            text-align: center;
+        }
+        
+        .local-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 30px auto;
+        }
+        
+        .local-description {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        /* Non-GMO specific styles */
+        .non-gmo-container {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            text-align: center;
+        }
+        
+        .non-gmo-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 30px auto;
+        }
+        
+        .non-gmo-description {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        /* Nutrition Claims specific styles */
+        .nutrition-container {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            position: relative; /* Add this */
+        }
+        .nutrition-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 30px auto;
+        }
+        
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .nutrition-item {
+            position: absolute;
+            text-align: center;
+        }
+        
+        .nutrition-text {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            text-align: center;
         }
     </style>
 </head>
@@ -133,85 +302,225 @@
     <nav class="top-nav">
         <h1 class="site-title" onclick="window.location.href='{{ url_for('home') }}'">Grocery Product Labeling</h1>
         <div class="nav-links">
-            <div class="dropdown-container">
-                <a href="#" id="produceLabelsLink">produce labels</a>
-                <div id="produceLabelsDropdown" class="dropdown-menu">
-                    <div class="arrow-up"></div>
-                    <a href="{{ url_for('learn', label_id=1) }}">Bioengineered</a>
-                    <a href="{{ url_for('learn', label_id=0) }}">Organic</a>
-                    <a href="{{ url_for('learn', label_id=2) }}">Conventional</a>
-                    <a href="{{ url_for('learn', label_id=3) }}">Local</a>
-                    <a href="{{ url_for('learn', label_id=4) }}">non-GMO</a>
-                    <a href="{{ url_for('learn', label_id=5) }}">Nutrition</a>
-                </div>
-            </div>
-            <a href="{{ url_for('quiz', question_id=0) }}">quiz</a>
+            <a href="{{ url_for('learn_overview') }}">produce labels</a>
+            <a href="{{ url_for('quiz_intro') }}">quiz</a>
         </div>
     </nav>
 
-    <div class="container">
-        <header class="text-center mb-5">
-            <h1 class="display-4">{{ label.title }}</h1>
-        </header>
-
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow mb-4">
-                    <img src="{{ url_for('static', filename=label.image_url[1:] if label.image_url.startswith('/') else label.image_url) }}" 
-                         class="card-img-top" alt="{{ label.title }} label example">
-                    <div class="card-body">
-                        <h3 class="card-title">About {{ label.title }} Labels</h3>
-                        <p class="card-text">{{ label.description }}</p>
-                        
-                        <h4>How to identify:</h4>
-                        <ul class="list-group list-group-flush mb-3">
-                            {% for identifier in label.identifiers %}
-                            <li class="list-group-item">{{ identifier }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+    <div class="label-container">
+        {% if label.name == "bioengineered" %}
+        <!-- Bioengineered/GMO specific layout -->
+        <h1 class="label-title">bioengineered/GMO</h1>
+        
+        <div class="bioengineered-container">
+            <!-- Left side with ranch dip image and identification section -->
+            <div class="bio-left-column">
+                <div class="highlight-box">
+                    <img src="https://cloudfront-us-east-1.images.arcpublishing.com/gmg/TNMMGWZYDFFY7JIUDLPO6LHSOY.jpg" class="bioengineered-image" alt="Ranch dip with bioengineered label">
+                    <!-- Removed highlight box from here -->
                 </div>
+                
+                <div class="identification-section">
+                    <h2>How to identify:</h2>
+                    <ul class="identification-list">
+                        <li>5-digit PLU code starting with 8</li>
+                        <li>Bioengineered disclosure symbol</li>
+                        <li>Bioengineered foods are “[t]hose that contain detectable genetic material that has been modified through certain lab techniques and cannot be created through conventional breeding or found in nature,” as defined in the National Bioengineered Food Disclosure Standard</li>
 
-                <div class="d-flex justify-content-between">
-                    {% if prev_url %}
-                    <a href="{{ prev_url }}" class="btn btn-outline-primary" id="prev-button">Previous Label</a>
-                    {% else %}
-                    <a href="{{ url_for('home') }}" class="btn btn-outline-primary">Back to Home</a>
-                    {% endif %}
-
-                    {% if next_url %}
-                    <a href="{{ next_url }}" class="btn btn-primary" id="next-button">
-                        {% if 'quiz' in next_url %}
-                        Start Quiz
-                        {% else %}
-                        Next Label
-                        {% endif %}
-                    </a>
-                    {% else %}
-                    <button class="btn btn-primary" disabled>Next Label</button>
-                    {% endif %}
+                    </ul>
                 </div>
             </div>
+            
+            <!-- Right side with bioengineered symbols image -->
+            <div class="bio-right-column">
+                <div class="highlight-box">
+                    <img src="https://assets.syndigo.cloud/cdn/fa7dea4e-1c1d-4790-9b7b-2223be122d91/fileType_jpg;size_600x600/fa7dea4e-1c1d-4790-9b7b-2223be122d91" class="bioengineered-image" alt="Bioengineered label symbols">
+                    <!-- Added highlight box here -->
+                    <div class="highlight" style="top: 62%; left: 62%; width: 20%; height: 5%;">
+                        <!-- This is where the highlight box will appear on the bioengineered symbols image -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% elif label.name == "conventional" %}
+        <!-- Conventional specific layout -->
+        <h1 class="label-title">conventional</h1>
+        
+        <div class="conventional-container">
+            <img src="https://makansutra.com/wp-content/uploads/2018/08/5dfd32_978520c0-dff6-11e3-84cf-fbf65e2d607e_1-guess-what-the-numbers-on-this-fruit-label-mean.jpg" class="conventional-image" alt="Conventional produce label with PLU codes">
+            
+            <div class="conventional-description">
+                4-digit PLU code starting with 3 or 4<br>
+                No special labels
+                it is typically used to refer to food not grown through organic production methods. So, conventional foods may be grown using chemical fertilizers, pesticides, or genetically modified organisms.
+
+            </div>
+        </div>
+        
+        {% elif label.name == "local" %}
+        <!-- Local specific layout -->
+        <h1 class="label-title">local</h1>
+        
+        <div class="local-container">
+            <img src="https://grist.org/wp-content/uploads/2013/05/apple-buy-local-crop-art.jpg" class="local-image" alt="Apple with local produce stickers">
+            
+            <div class="local-description">
+                Locally grown stickers<br> 
+                Grown within a defined local region (usually 100-400 miles)
+            </div>
+        </div>
+        
+        {% elif label.name == "non-gmo" %}
+        <!-- Non-GMO specific layout -->
+        <h1 class="label-title">non-GMO</h1>
+        
+        <div class="non-gmo-container">
+            <img src="https://media.npr.org/assets/img/2015/01/19/non-gmo-e8de02756cd03fb9127c016a13e3748ba31fb5e8.jpg" class="non-gmo-image" alt="Non-GMO Project Verified label on products">
+            
+            <div class="non-gmo-description">
+                Non-GMO Project - Verified seal </br>
+                “GMO” stands for “genetically modified organism.” While there are no USDA or FDA regulations that specifically define this claim, both agencies have working definitions of “genetic modification.” USDA defines “genetic modification” as “[t]he production of heritable improvements in plants or animals for specific uses, via either genetic engineering or other more traditional methods.” </br>
+                non-GMO doesn't necessarily mean not genetically modified
+            </div>
+        </div>
+        
+        {% elif label.name == "nutrition" %}
+        <!-- Nutrition Claims specific layout -->
+        <h1 class="label-title">nutrition</h1>
+        
+        <div class="nutrition-container">
+            <div style="position: relative;">
+                <img src="https://openwa.pressbooks.pub/app/uploads/sites/507/2023/06/image6.png" class="nutrition-image" alt="Nutrition claims on food packaging">
+                
+                <!-- Position buttons directly on the image -->
+                <!-- Left button -->
+                <button class="plus-button" style="position: absolute; bottom: 140px; left: -30px;" onclick="toggleInfo('nutrition-info-1')">+</button>
+                <div id="nutrition-info-1" class="info-text" style="position: absolute; bottom:70px; left: -30px; width: 200px; text-align: center;">
+                    <p>10-19% of Daily Value</p>
+                </div>
+                
+                <!-- Middle button -->
+                <button class="plus-button" style="position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);" onclick="toggleInfo('nutrition-info-2')">+</button>
+                <div id="nutrition-info-2" class="info-text" style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); width: 280px; text-align: center;">
+                    <p>"High in" - 20% or more of Daily Value</p>
+                </div>
+                
+                <!-- Right button -->
+                <button class="plus-button" style="position: absolute; bottom: 10px; right: 110px;" onclick="toggleInfo('nutrition-info-3')">+</button>
+                <div id="nutrition-info-3" class="info-text" style="position: absolute; bottom: -90px; right: 60px; width: 280px; text-align: center;">
+                    <p>"light in" - 20% or less of Daily Value</p>
+                </div>
+            </div>
+  
+        </div>
+        
+        {% elif label.name == "organic" %}
+        <!-- Organic specific layout with your adjusted button positions -->
+        <h1 class="label-title">{{ label.title }}</h1>
+        
+        <div class="image-container">
+            <img src="https://i5.peapod.com/c/65/65RPU.png" class="product-image" alt="Organic broccoli package">
+            
+            <!-- USDA Organic Seal Info Point -->
+            <div class="info-point" style="top: 30%; right: 20%;">
+                <button class="plus-button" onclick="toggleInfo('usda-info')">+</button>
+                <div id="usda-info" class="info-text" style="top: 0; left: 50px;">
+                    <div class="info-title">USDA Organic seal</div>
+                    <p>Grown without synthetic pesticides or fertilizers, no GMOs, and meets USDA standards</p>
+                </div>
+            </div>
+            
+            <!-- Side Info Point -->
+            <div class="info-point" style="top: 75%; left: 20%;">
+                <button class="plus-button" onclick="toggleInfo('side-info')">+</button>
+                <div id="side-info" class="info-text" style="top: 0; right: 50px;">
+                    <div class="info-title">Other nutritional information</div>
+                    <p>Organic labels often include additional nutritional information and health claims about the product</p>
+                </div>
+            </div>
+            
+            <!-- Bottom Info Point -->
+            <div class="info-point" style="bottom: 12%; right: 20%;">
+                <button class="plus-button" onclick="toggleInfo('bottom-info')">+</button>
+                <div id="bottom-info" class="info-text" style="bottom: 0; left: 50px;">
+                    <div class="info-title">5-digit PLU code starting with 9</div>
+                    <p>Organic produce has a 5-digit code that begins with 9, indicating it's grown according to organic standards</p>
+                </div>
+            </div>
+        </div>
+        
+        {% else %}
+        <!-- Generic layout for other label types -->
+        <h1 class="label-title">{{ label.title }}</h1>
+        
+        <div class="image-container">
+            <img src="{{ url_for('static', filename=label.image_url[1:] if label.image_url.startswith('/') else label.image_url) }}" 
+                 class="product-image" alt="{{ label.title }} label example">
+             
+            <!-- Generic Info Points for other labels -->
+            {% for identifier in label.identifiers %}
+            <div class="info-point" style="top: {{ 20 + loop.index0 * 25 }}%; right: 5%;">
+                <button class="plus-button" onclick="toggleInfo('info-{{ loop.index }}')">+</button>
+                <div id="info-{{ loop.index }}" class="info-text" style="top: 0; right: 50px;">
+                    <div class="info-title">{{ identifier }}</div>
+                    <p>{{ label.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="navigation-buttons">
+            {% if prev_url %}
+            <a href="{{ prev_url }}" class="nav-button" id="prev-button">Previous Label</a>
+            {% else %}
+            <a href="{{ url_for('home') }}" class="nav-button">Back to Home</a>
+            {% endif %}
+
+            {% if next_url %}
+            <a href="{{ next_url }}" class="nav-button" id="next-button">
+                {% if 'quiz' in next_url %}
+                Start Quiz
+                {% else %}
+                Next Label
+                {% endif %}
+            </a>
+            {% else %}
+            <span class="nav-button disabled-button">Next Label</span>
+            {% endif %}
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Toggle dropdown menu for produce labels
-            $('#produceLabelsLink').on('click', function(e) {
-                e.preventDefault();
-                $('#produceLabelsDropdown').toggleClass('show');
-            });
-            
-            // Close dropdown when clicking outside
-            $(document).on('click', function(e) {
-                if (!$(e.target).closest('.dropdown-container').length) {
-                    $('#produceLabelsDropdown').removeClass('show');
+        function toggleInfo(id) {
+            // First hide all info boxes
+            document.querySelectorAll('.info-text').forEach(box => {
+                if (box.id !== id) {
+                    box.classList.remove('visible');
                 }
             });
             
+            // Toggle the selected info box
+            const infoBox = document.getElementById(id);
+            infoBox.classList.toggle('visible');
+            
+            // Prevent event from bubbling up
+            event.stopPropagation();
+        }
+        
+        // Close info boxes when clicking elsewhere
+        document.addEventListener('click', function(event) {
+            if (!event.target.classList.contains('plus-button')) {
+                document.querySelectorAll('.info-text').forEach(box => {
+                    box.classList.remove('visible');
+                });
+            }
+        });
+        
+        $(document).ready(function() {
             // Record when user views this page
             console.log('User viewed label: {{ label.name }}');
             
